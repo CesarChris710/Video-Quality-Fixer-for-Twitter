@@ -1,13 +1,9 @@
 // ==UserScript==
 // @name                Video Quality Fixer for X (Twitter)
-// @name:zh             X (Twitter) 视频画质修复
-// @name:zh-CN          X (Twitter) 视频画质修复
 // @namespace           https://github.com/yuhaofe
-// @version             0.2.1
-// @description         Force highest quality playback for X (Twitter) videos.
-// @description:zh      强制 X (Twitter) 播放最高画质的视频
-// @description:zh-CN   强制 X (Twitter) 播放最高画质的视频
-// @author              yuhaofe
+// @version             0.2.2
+// @description         Force highest quality playback for X (Twitter) videos. Updated for 2025 interface.
+// @author              yuhaofe (original) + royriv3r
 // @match               https://x.com/*
 // @match               https://mobile.x.com/*
 // @match               https://twitter.com/*
@@ -17,24 +13,50 @@
 
 (function() {
     'use strict';
-    initHijack();
+
+    // Configuration
+    const config = {
+        debug: false,
+        forceHighestQuality: true,
+        showQualityMark: true,
+        storageKey: 'vqfft-disablehq'
+    };
+
+    // Initialize components
+    initHLSInterceptor();
     initUI();
-    
-    function initHijack() {
-        var realOpen = window.XMLHttpRequest.prototype.open;
-        window.XMLHttpRequest.prototype.open = hijackedOpen;
-        
-        function hijackedOpen() {
-            var url = arguments['1'];
+
+    // Log helper
+    function log(message) {
+        if (config.debug) {
+            console.log(`[Video Quality Fixer] ${message}`);
+        }
+    }
+
+    // HLS Interceptor
+    function initHLSInterceptor() {
+        log('Initializing HLS interceptor');
+
+        const realOpen = window.XMLHttpRequest.prototype.open;
+        window.XMLHttpRequest.prototype.open = function() {
+            const url = arguments['1'];
             if (isHLSPlaylist(url)) {
+                log(`Intercepted HLS playlist: ${url}`);
                 this.addEventListener('readystatechange', function(e) {
                     if (this.readyState === 4) {
-                        var originalText = e.target.responseText;
-                        if(isMasterPlaylist(originalText)) {
-                            var modifiedText = modifyMasterPlaylist(originalText);
-                            Object.defineProperty(this, 'response', {writable: true});
-                            Object.defineProperty(this, 'responseText', {writable: true});
-                            this.response = this.responseText = modifiedText;
+                        try {
+                            const originalText = e.target.responseText;
+                            if (isMasterPlaylist(originalText)) {
+                                log('Master playlist detected, modifying...');
+                                const modifiedText = modifyMasterPlaylist(originalText);
+                                Object.defineProperty(this, 'response', {writable: true});
+                                Object.defineProperty(this, 'responseText', {writable: true});
+                                this.response = this.responseText = modifiedText;
+                            } else if (isMediaPlaylist(originalText)) {
+                                log('Media playlist detected, no modification needed');
+                            }
+                        } catch (error) {
+                            log(`Error processing XHR response: ${error.message}`);
                         }
                     }
                 });
@@ -43,50 +65,74 @@
         };
 
         function isHLSPlaylist(url) {
-            var reg = new RegExp(/^https:\/\/video\.twimg\.com\/.+m3u8?/, 'i') ;
-            return reg.test(url);
+            if (!url) return false;
+
+            const hlsRegex = new RegExp(/^https:\/\/video\.twimg\.com\/.*\.m3u8(?:\?.*)?$/, 'i');
+            return hlsRegex.test(url);
         }
 
         function isMasterPlaylist(text) {
-            return text.indexOf('#EXT-X-TARGETDURATION') === -1 && text.indexOf('#EXT-X-STREAM-INF') != -1;
+            if (!text) return false;
+            return text.indexOf('#EXT-X-TARGETDURATION') === -1 && text.indexOf('#EXT-X-STREAM-INF') !== -1;
+        }
+
+        function isMediaPlaylist(text) {
+            if (!text) return false;
+            return text.indexOf('#EXT-X-TARGETDURATION') !== -1;
         }
 
         function modifyMasterPlaylist(text) {
-            var result = text;
-            var reg = new RegExp(/^#EXT-X-STREAM-INF:.*BANDWIDTH=(\d+).*\r?\n.*$/, 'gm');
-            var stream = reg.exec(text);
-            if (stream) {
-                var globalTags = text.substring(0, stream.index);
+            if (!text) return text;
 
-                // find max bitrate media playlist
-                var maxBitrateStream = stream;
-                while((stream = reg.exec(text)) != null){
+            let result = text;
+            const reg = new RegExp(/^#EXT-X-STREAM-INF:.*BANDWIDTH=(\d+).*\r?\n(.*)$/, 'gm');
+            let stream = reg.exec(text);
+
+            if (stream) {
+                const globalTags = text.substring(0, stream.index);
+
+                let maxBitrateStream = stream;
+                while ((stream = reg.exec(text)) !== null) {
                     if (parseInt(stream[1]) > parseInt(maxBitrateStream[1])) {
                         maxBitrateStream = stream;
                     }
                 }
-    
+
+                log(`Selected highest bitrate: ${maxBitrateStream[1]}`);
                 result = globalTags + maxBitrateStream[0];
             }
+
             return result;
         }
     }
-    
+
+    // UI Component
     function initUI() {
-        // add a mark helps identify if userscript loaded successfully
-        var disableHQ = localStorage.getItem('vqfft-disablehq');
-        if(!disableHQ) {
-            var mark = document.createElement('button');
+        if (!config.showQualityMark) return;
+
+        const disableHQ = localStorage.getItem(config.storageKey);
+        if (disableHQ) return;
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', createHQMark);
+        } else {
+            createHQMark();
+        }
+
+        function createHQMark() {
+            const mark = document.createElement('button');
             mark.innerText = 'HQ';
             mark.style = "position: fixed;right: 5px;top: 5px;color: white;border-width: 0px;border-radius: 5px;background-color: gray;opacity: 0.5;";
+            mark.title = "Video Quality Fixer is active";
+
             mark.onclick = function() {
-                if(confirm('Do not display HQ mark anymore?')){
-                    localStorage.setItem('vqfft-disablehq', 'true');
+                if (confirm('Désactiver le marqueur HQ ?')) {
+                    localStorage.setItem(config.storageKey, 'true');
                     mark.remove();
                 }
             };
+
             document.body.appendChild(mark);
         }
     }
 })();
-
