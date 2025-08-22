@@ -295,4 +295,10 @@
         }
     }
 
+    // Original UI initialization
+    function initUI() {
+        log('Initializing UI components');
+        // ... (keep original UI code)
+    }
+
 })();

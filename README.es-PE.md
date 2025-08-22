@@ -3,6 +3,8 @@
 
 Muestra la máxima calidad en los videos de X (Twitter)
 
+<center><a href="https://github.com/CesarChris710/Video-Quality-Fixer-for-Twitter/blob/master/README.md">English</a></center>
+
 ## Lista de Cambios
 ### 0.2.3 
 - Eliminé el icono de desactivación de HQ, en su lugar cambié a un popup que muestra la información en que calidad máxima posible está mostrandose el video reproducido.

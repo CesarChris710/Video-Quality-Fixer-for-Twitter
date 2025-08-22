@@ -1,7 +1,9 @@
 # Video Quality Fixer for X (Twitter)
-[![](https://img.shields.io/github/stars/yuhaofe/Video-Quality-Fixer-for-Twitter?style=social)](https://github.com/yuhaofe/Video-Quality-Fixer-for-Twitter)
+[![](https://img.shields.io/github/stars/CesarChris710/Video-Quality-Fixer-for-Twitter?style=social)](https://github.com/CesarChris710/Video-Quality-Fixer-for-Twitter)
 
 Force highest quality playback for X (Twitter) videos.
+
+<center><a href="https://github.com/CesarChris710/Video-Quality-Fixer-for-Twitter/blob/master/README.es-PE.md">Español</a></center>
 
 ## Changelog
 ### 0.2.3
