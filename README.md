@@ -3,15 +3,28 @@
 
 Force highest quality playback for X (Twitter) videos.
 
-There will be a "HQ" mark on the top right corner of the webpage if this script is loaded successfully. You can disable it by clicking on the mark.
+## Changelog
+### 0.2.3
+- Removed the HQ disable icon, replaced with a popup that shows the maximum possible quality at which the video is being played.
 
-## Compatibility
-### Chrome 84.0.4147.125
-- tampermonkey (4.10): ⭕
-- violentmonkey (2.12.7): ⭕
+### 0.2.2
+- Fixed by royriv3r
 
-### Firefox 79.0
-- tampermonkey (4.11.6117): ⭕
-  - if it doesn't work well, you can try [this](https://github.com/Tampermonkey/tampermonkey/issues/952#issuecomment-638373937) workaround.
-- violentmonkey (2.12.7): ❌
-- Greasemonkey (4.9): ❌
+### 0.2.1
+
+- Original <a href="https://github.com/yuhaofe" target="_blank">yuhaofe</a>
+
+## Installation
+
+1. Install the <code>Violentmonkey</code> extension/add-on on Chromium (Brave/Vivaldi) / Firefox (Recommended)
+
+- Chromium: <a href="https://chromewebstore.google.com/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag" target="_blank">Violentmonkey</a>
+- Firefox: <a href="https://addons.mozilla.org/firefox/addon/violentmonkey/" target="_blank">Violentmonkey</a>
+
+1. Install the <code>Tampermonkey</code> extension/add-on on Chromium (Brave/Vivaldi) / Firefox
+
+- Chromium: <a href="https://chromewebstore.google.com/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo" target="_blank">Tampermonkey</a>
+- Firefox: <a href="https://addons.mozilla.org/es/firefox/addon/tampermonkey/" target="_blank">Tampermonkey</a>
+
+2. Install <code>Userscript+</code>
+- GitHub: [Install](https://cdn.jsdelivr.net/gh/CesarChris710/Video-Quality-Fixer-for-Twitter/vqfft.user.js)
