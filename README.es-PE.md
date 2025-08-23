@@ -29,4 +29,4 @@ Muestra la máxima calidad en los videos de X (Twitter)
 - Firefox: <a href="https://addons.mozilla.org/es/firefox/addon/tampermonkey/" target="_blank">Tampermonkey</a>
 
 2. Instale <code>Userscript+</code>
-- GitHub: [Instalar](https://cdn.jsdelivr.net/gh/CesarChris710/Video-Quality-Fixer-for-Twitter/vqfft.user.js)
+- GitHub: [Instalar](https://raw.githubusercontent.com/CesarChris710/Video-Quality-Fixer-for-Twitter/master/vqfft.user.js)

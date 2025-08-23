@@ -29,4 +29,4 @@ Force highest quality playback for X (Twitter) videos.
 - Firefox: <a href="https://addons.mozilla.org/es/firefox/addon/tampermonkey/" target="_blank">Tampermonkey</a>
 
 2. Install <code>Userscript+</code>
-- GitHub: [Install](https://cdn.jsdelivr.net/gh/CesarChris710/Video-Quality-Fixer-for-Twitter/vqfft.user.js)
+- GitHub: [Install](https://raw.githubusercontent.com/CesarChris710/Video-Quality-Fixer-for-Twitter/master/vqfft.user.js)

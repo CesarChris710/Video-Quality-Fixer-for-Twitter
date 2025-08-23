@@ -11,8 +11,8 @@
 // @match               https://mobile.x.com/*
 // @match               https://twitter.com/*
 // @match               https://mobile.twitter.com/*
-// @updateURL           https://cdn.jsdelivr.net/gh/CesarChris710/Video-Quality-Fixer-for-Twitter/vqfft.user.js
-// @downloadURL         https://cdn.jsdelivr.net/gh/CesarChris710/Video-Quality-Fixer-for-Twitter/vqfft.user.js
+// @updateURL           https://raw.githubusercontent.com/CesarChris710/Video-Quality-Fixer-for-Twitter/master/vqfft.user.js
+// @downloadURL         https://raw.githubusercontent.com/CesarChris710/Video-Quality-Fixer-for-Twitter/master/vqfft.user.js
 // @grant               none
 // ==/UserScript==
 
